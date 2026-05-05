@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>İyi ki Doğdun Nisa! ✨</title>
+    <style>
+        :root {
+            --ana-renk: #ff85a2; /* Nisa pembe */
+            --arka-plan: #fff5f7;
+        }
+
+        body {
+            background-color: var(--arka-plan);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 0;
+            overflow-x: hidden;
+            color: #444;
+            min-height: 100vh;
+        }
+
+        /* Başlık Animasyonu */
+        .header {
+            text-align: center;
+            padding: 50px 20px;
+            animation: fadeInDown 1.5s ease-out;
+        }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1 {
+            color: var(--ana-renk);
+            font-size: 3.5rem;
+            margin: 0;
+            text-shadow: 2px 2px 0px #fff;
+        }
+
+        /* Pasta ve Mum Alanı */
+        .cake-section {
+            position: relative;
+            cursor: pointer;
+            text-align: center;
+            margin: 20px 0;
+            transition: transform 0.3s;
+        }
+
+        .cake-section:hover {
+            transform: scale(1.03);
+        }
+
+        .cake-img {
+            width: 280px;
+            filter: drop-shadow(0 10px 15px rgba(0,0,0,0.1));
+        }
+
+        .candle {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 12px;
+            height: 40px;
+            background: linear-gradient(to bottom, #ffd1dc, var(--ana-renk));
+            border-radius: 5px;
+            z-index: 2;
+        }
+
+        .flame {
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 15px;
+            height: 20px;
+            background: orange;
+            border-radius: 50% 50% 20% 20%;
+            box-shadow: 0 0 15px orange;
+            animation: flicker 0.1s infinite alternate;
+        }
+
+        @keyframes flicker {
+            0% { transform: translateX(-50%) scale(1); opacity: 0.9; }
+            100% { transform: translateX(-50%) scale(1.1); opacity: 1; }
+        }
+
+        /* Mesaj Kartı */
+        .message-card {
+            background: white;
+            max-width: 500px;
+            padding: 35px;
+            border-radius: 25px;
+            box-shadow: 0 15px 35px rgba(255, 133, 162, 0.2);
+            margin: 40px 20px;
+            text-align: center;
+            border: 2px dashed var(--ana-renk);
+            opacity: 0; /* Başlangıçta gizli */
+        }
+
+        /* Sürpriz Butonu */
+        .btn-surprise {
+            background: var(--ana-renk);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.2rem;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: 0.3s;
+            font-weight: bold;
+            box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+        }
+
+        .btn-surprise:hover {
+            background: #ff4f7d;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.15);
+        }
+
+        /* Konfeti */
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            z-index: 1000;
+        }
+    </style>
+</head>
+<body>
+
+    <audio id="sfx-blow"><source src="https://assets.mixkit.co/active_storage/sfx/2573/2573-preview.mp3" type="audio/mpeg"></audio>
+    <audio id="sfx-party"><source src="https://assets.mixkit.co/active_storage/sfx/2733/2733-preview.mp3" type="audio/mpeg"></audio>
+
+    <div class="header">
+        <h1>İyi ki Doğdun Nisa! 🎂</h1>
+        <p style="color: var(--ana-renk); font-weight: bold;">Bugün senin günün! ❤️</p>
+    </div>
+
+    <div class="cake-section" id="cake-area" onclick="extinguishCandle()">
+        <div class="candle" id="candle">
+            <div class="flame" id="main-flame"></div>
+        </div>
+        <img src="https://cdn-icons-png.flaticon.com/512/3144/3144760.png" class="cake-img" alt="Pasta">
+        <p id="instruction">Mumu üflemek için pastaya tıkla! 👆</p>
+    </div>
+
+    <div class="message-card" id="message-card">
+        <h3>✨ Sevgili Nisa, ✨</h3>
+        <p>Dünyanın en tatlı kuzeni bugün doğmuş! Yeni yaşın sana tüm mutlulukları, sağlık ve başarıyı getirsin. Senin gibi bir kuzenim olduğu için çok şanslıyım.</p>
+        <p>Hep gül, hep mutlu ol! ❤️ Nice senelere...</p>
+        <button class="btn-surprise" onclick="startParty()">Asıl Sürpriz İçin Tıkla! 🎉</button>
+    </div>
+
+    <script>
+        let candleOut = false;
+
+        function extinguishCandle() {
+            if (candleOut) return;
+
+            // Ses efektini çal
+            document.getElementById('sfx-blow').play();
+
+            // Mumu söndür
+            document.getElementById('main-flame').style.display = 'none';
+            document.getElementById('instruction').innerText = 'Dileğin kabul oldu! ✨';
+            
+            // Mesaj kartını göster
+            setTimeout(() => {
+                document.getElementById('message-card').style.opacity = '1';
+                document.getElementById('message-card').style.transition = 'opacity 1s';
+                alert("Nisa, harika bir dilek tutmayı unutma! 🕯️");
+            }, 500);
+
+            candleOut = true;
+        }
+
+        function startParty() {
+            // Konfeti sesi
+            document.getElementById('sfx-party').play();
+
+            // Konfeti yağmuru
+            for(let i=0; i<150; i++) {
+                createConfetti();
+            }
+        }
+
+        function createConfetti() {
+            const confetti = document.createElement('div');
+            confetti.classList.add('confetti');
+            confetti.style.left = Math.random() * window.innerWidth + 'px';
+            confetti.style.top = '-10px';
+            confetti.style.backgroundColor = ['#ff85a2', '#ffeb3b', '#4caf50', '#2196f3', '#9c27b0', '#ffc107'][Math.floor(Math.random() * 6)];
+            document.body.appendChild(confetti);
+
+            const animation = confetti.animate([
+                { transform: 'translateY(0) rotate(0)', opacity: 1 },
+                { transform: `translateY(${window.innerHeight}px) rotate(${Math.random() * 720}deg)`, opacity: 0 }
+            ], {
+                duration: Math.random() * 2000 + 3000,
+                easing: 'ease-out'
+            });
+
+            animation.onfinish = () => confetti.remove();
+        }
+    </script>
+</body>
+</html>
